@@ -40,7 +40,6 @@
 #include <sel4vm/boot.h>
 #include <sel4vm/guest_ram.h>
 #include <sel4vm/guest_iospace.h>
-#include <sel4vm/guest_irq_controller.h>
 
 #include <sel4vmmplatsupport/drivers/virtio_con.h>
 
@@ -53,6 +52,7 @@
 #include <sel4vmmplatsupport/arch/guest_reboot.h>
 #include <sel4vmmplatsupport/arch/guest_vcpu_fault.h>
 #include <sel4vmmplatsupport/guest_vcpu_util.h>
+#include <sel4vmmplatsupport/guest_irq_controller.h>
 
 #include <sel4utils/process.h>
 #include <sel4utils/irq_server.h>
@@ -1093,7 +1093,7 @@ int main_continued(void)
     ZF_LOGF_IF(err, "Failed to bind CB to SID");
 #endif /* CONFIG_ARM_SMMU */
 
-    err = vm_create_default_irq_controller(&vm);
+    err = vm_install_irq_controller(&vm);
     assert(!err);
 
     for (int i = 0; i < NUM_VCPUS; i++) {
