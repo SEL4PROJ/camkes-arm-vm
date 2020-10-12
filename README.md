@@ -8,6 +8,9 @@
   @TAG(DATA61_BSD)
 
 -->
+* Depreciated: please use https://github.com/SEL4PROJ/camkes-vm-manifest
+* Apps are now here https://github.com/SEL4PROJ/camkes-vm-apps
+* ARM VM is now here https://github.com/seL4/camkes-vm
 
 # camkes-arm-vm
 
