@@ -8,12 +8,10 @@
   @TAG(DATA61_BSD)
 
 -->
-
 **This repository is deprecated.** \\
-See <https://github.com/seL4/camkes-vm-examples-manifest> instead.
-Apps are now at <https://github.com/seL4/camkes-vm-apps>.
-ARM VM is now at <https://github.com/seL4/camkes-vm>
-
+* Camkes-arm-vm has been moved to https://github.com/seL4/camkes-vm
+* You can now access Arm example apps here https://github.com/seL4/camkes-vm-examples
+* New manifest is https://github.com/seL4/camkes-vm-examples-manifest
 
 # camkes-arm-vm
 
@@ -30,7 +28,7 @@ Currently the supported ARM platforms the camkes-arm-vm can run on include:
 ## Getting and Building
 The following example builds the camkes arm vmm for the TK1.
 ```bash
-repo init -u https://github.com/SEL4PROJ/camkes-arm-vm-manifest.git
+repo init -u https://github.com/seL4/camkes-vm-examples-manifest
 repo sync
 mkdir build
 cd build
@@ -58,7 +56,7 @@ Linux guest (1-1 model).
 * `vm_virtio_net`: Application demonstrating the use of Virtio Net, where a virtual network interface is presented to a VM and subsequent network
 traffic on the virtual network interface is sent to/from other native seL4 components.
 
-See the `apps/` subdirectory for all the supported virtual machine manager apps, their implementations and the platforms they target.
+See the `apps/Arm` subdirectory for all the supported virtual machine manager apps, their implementations and the platforms they target.
 
 ## Features
 See the below feature matrix for the various features the CAmkES ARM VMM implements/facilitates across the various supported platforms.
@@ -69,13 +67,13 @@ See the below feature matrix for the various features the CAmkES ARM VMM impleme
 | TK1 | 32-bit | Unsupported | Unsupported | Unsupported | Unsupported | Unsupported | Unsupported | SMP configurations are unsupported due to: * No TK1 kernel SMP support * No virtual power device interface to manage VCPU's at runtime (e.g. core startup) Virtio PCI, Console, Net, Cross VM connector support & Multi-VM are untested  |
 | TX1 | 64-bit | Supported | Unsupported | Unsupported | Unsupported | Unsupported | Unsupported | Virtio PCI, Console, Net, Cross VM connector support & Multi-VM are untested |
 | TX2 | 64-bit | Supported | Supported | Supported | Supported | Supported | Unsupported | Cross VM connector support is untested |
-| QEMU Virt | 64-bit | Supported | Unsupported | Supported | Supported | Supported | Supported | Multi-VM support depends on porting the TimeServer to QEMU (See https://github.com/SEL4PROJ/global-components/tree/master/components/TimeServer) |
+| QEMU Virt | 64-bit | Supported | Unsupported | Supported | Supported | Supported | Supported | Multi-VM support depends on porting the TimeServer to QEMU (See https://github.com/seL4/global-components/tree/master/components/TimeServer) |
 
 
 ## Platform Configuration Notes
 
 ### Exynos5422, TX1, TX2, QEMU ARM Virt configuration
-We provide a pre-built Linux image and Buildroot image for our guest VM's. See the images in the `camkes-vm-images` repository @ https://github.com/SEL4PROJ/camkes-vm-images
+We provide a pre-built Linux image and Buildroot image for our guest VM's. See the images in the `camkes-vm-images` repository @ https://github.com/seL4/camkes-vm-images
 When compiling an application for these platforms, the images are sourced from the platforms subdirectory in the `camkes-vm-images` repo.
 Feel free also to compile your own Linux and Rootfs images, see the README's in each platform subdirectory (within `camkes-vm-images`) for information about our
 image build configurations.
@@ -153,20 +151,20 @@ See the below list as as a rough list of items to check off:
 * Ensure the platform is already supported by seL4 (or you have developed support for the platform prior). See the [following](https://docs.sel4.systems/Hardware/) page for a list of supported platforms.
 * The platform supports ARM's hardware virtualisation features, these being found on ARMv7 (with virtualisation extensions) and ARMv8.
     * Second to this, the seL4 port to the given platform also supports running with `KernelArmHypervisorSupport`
-* Does your platform use a GICv2 or GICv3? *Note: We currently only support a virtual GICV2, with virtual GICV3 support under-development. See the listed features of libsel4vm for further information: https://github.com/SEL4PROJ/seL4_projects_libs/tree/master/libsel4vm*
+* Does your platform use a GICv2 or GICv3? *Note: We currently only support a virtual GICV2, with virtual GICV3 support under-development. See the listed features of libsel4vm for further information: https://github.com/seL4/seL4_projects_libs/tree/master/libsel4vm*
 * When porting a VMM application to your platform, say `vm_minimal`, ensure you provide the following:
     * A `devices.camkes` file for your platform. These containing platform specific definitions, see in particular the vm `dtb` field and the `untyped_mmios` field (for device passthrough). The values in the aforementioned fields corresponding with those found in the kernel device tree.
     * A `vmlinux.h` header for you platform. See the header file for the other supported platforms at `components/VM/plat_include`
-* Provide a pre-compiled Linux kernel and initrd image for your platform. Once compiled these are usually linked in through your apps `CMakeLists.txt`. See `apps/vm_minimal/CMakeLists.txt` for examples of how other platforms link in their images.
+* Provide a pre-compiled Linux kernel and initrd image for your platform. Once compiled these are usually linked in through your apps `CMakeLists.txt`. See `apps/Arm/vm_minimal/CMakeLists.txt` for examples of how other platforms link in their images.
 
 Feel free to contact the [team](https://docs.sel4.systems/processes/#contact) for further support on porting the camkes-arm-vm to your desired platform. We are also always open to contributions for new platforms.
 
 #### Can a single VMM component support running multiple VM's?
 Currently, No. A VMM component only creates and manages a single VM instance.
-To support multiple VM's, you can run multiple VMM components, each managing its own VM. See `apps/vm_multi` for an example of this configuration.
+To support multiple VM's, you can run multiple VMM components, each managing its own VM. See `apps/Arm/vm_multi` for an example of this configuration.
 
 #### How do I enable SMP support for a VM instance?
-To configure your VM with multiple VCPU's, you can set the VM instance attribute `num_vcpus` in your camkes configuration. See [here](https://github.com/SEL4PROJ/camkes-arm-vm/blob/master/apps/vm_minimal/tx2/devices.camkes#L40) for an example.
+To configure your VM with multiple VCPU's, you can set the VM instance attribute `num_vcpus` in your camkes configuration. See [here](https://github.com/seL4/camkes-vm-examples/blob/master/apps/Arm/vm_minimal/tx2/devices.camkes#L40) for an example.
 In addition, when initialising your build, ensure the `KernelMaxNumNodes` configuration option is set to your desired value. You can also initialise your build with variable `-DNUM_NODES` variable e.g.
 ```bash
 ../init-build.sh -DCAMKES_VM_APP=vm_minimal -DPLATFORM=tx2 -DNUM_NODES=4
